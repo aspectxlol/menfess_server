@@ -1,14 +1,14 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { AppService } from './app.service';
-import { message } from './database/models/messages';
+import { Request } from 'express'
 
 @Controller('api/v1')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('/message/add')
-  async addMessage(@Body() body): Promise<message> {
-    const { from, to, message } = body
+  async addMessage(@Req() req: Request): Promise<any> {
+    const {from, to, message} = req.body
     return await this.appService.addMessage({
       from,
       to,
