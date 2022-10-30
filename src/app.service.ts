@@ -9,10 +9,10 @@ export class AppService {
       from: message.from,
       to: message.to,
       message: message.message,
-    })
+    });
   }
 
   async getMessage(id?: string): Promise<any> {
-    return await getMessage(id)
+    return await getMessage(id);
   }
 }
