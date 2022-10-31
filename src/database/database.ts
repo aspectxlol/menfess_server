@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import messages from './models/messages';
+import Message from './models/Message';
+import Song from './models/Song';
 import 'dotenv/config';
 import { v4 } from 'uuid';
 
@@ -18,7 +19,7 @@ export interface addMSG {
   message: string;
 }
 export const addMessage = async (message: addMSG) => {
-  const msg = new messages({
+  const msg = new Message({
     from: message.from,
     to: message.to,
     message: message.message,
@@ -30,10 +31,41 @@ export const addMessage = async (message: addMSG) => {
 
 export const getMessage = async (id?: string) => {
   if (!id) {
-    const result = await messages.find();
+    const result = await Message.find();
     return result;
   } else if (id) {
-    const result = await messages.findOne({ id: id });
+    const result = await Message.findOne({ id: id });
+    return result;
+  }
+};
+
+export interface addSong {
+  from?: string;
+  to?: string;
+  song: {
+    ytid: string;
+    title: string;
+  };
+}
+
+export const addSong = async (song: addSong) => {
+  const tempSong = new Song({
+    from: song.from,
+    to: song.to,
+    song: {
+      ytid: song.song.ytid,
+      title: song.song.title,
+    },
+  });
+  return await tempSong.save();
+};
+
+export const getSong = async (id: string) => {
+  if (!id) {
+    const result = await Song.find();
+    return result;
+  } else if (id) {
+    const result = await Song.findOne({ id: id });
     return result;
   }
 };
